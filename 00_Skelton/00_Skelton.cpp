@@ -1,5 +1,7 @@
 #define GLFW_INCLUDE_GLU
-#include <glfw/glfw3.h>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 static const char*	WINDOW_TITLE		= "00_Skelton";	// ウィンドウ名
 static const bool	IS_FULLSCREEN_MODE	= false;		// フルスクリーンモード（trueでフルスクリーン）
@@ -11,6 +13,9 @@ int main()
 {
 	// GLFW初期化
 	glfwInit();
+
+	// GLEW初期化
+	glewInit();
 
 	// ウィンドウ作成
 	GLFWwindow* pWindow = glfwCreateWindow(
