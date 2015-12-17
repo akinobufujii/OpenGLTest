@@ -1,5 +1,9 @@
 #define GLFW_INCLUDE_GLU
 
+#if defined(_WIN32)
+#pragma comment(lib, "OpenGL32.lib")
+#endif
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -25,9 +29,15 @@ int main()
 		(IS_FULLSCREEN_MODE)? glfwGetPrimaryMonitor() : nullptr,
 		nullptr);
 
+	// 現在のウィンドウをスレッドに渡す
+	glfwMakeContextCurrent(pWindow);
+
 	// OpenGL描画ループ
 	while(glfwWindowShouldClose(pWindow) == 0)
 	{
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0, 0, 1, 1);
+
 		glfwSwapBuffers(pWindow);
 		glfwPollEvents();
 	}
