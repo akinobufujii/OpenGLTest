@@ -1,0 +1,7 @@
+# 除外する拡張子
+*.sdf
+*.opensdf
+
+# 除外するディレクトリ
+Debug/
+Release/
