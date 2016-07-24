@@ -41,9 +41,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 	// GLFW初期化
 	glfwInit();
 
-	// GLEW初期化
-	glewInit();
-
 	// ウィンドウ作成
 	GLFWwindow* pWindow = glfwCreateWindow(
 		WINDOW_WIDTH,
@@ -54,6 +51,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 
 	// 現在のウィンドウをスレッドに渡す
 	glfwMakeContextCurrent(pWindow);
+
+	// GLEW初期化
+	glewInit();
 
 	glfwSwapInterval(0);
 
