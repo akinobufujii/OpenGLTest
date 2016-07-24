@@ -38,8 +38,6 @@ void Render()
 //==============================================================================
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-	glewExperimental = GL_TRUE;
-
 	// GLFW初期化
 	glfwInit();
 
@@ -56,6 +54,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 
 	// 現在のウィンドウをスレッドに渡す
 	glfwMakeContextCurrent(pWindow);
+
+	glfwSwapInterval(0);
 
 	FPSCounter fpsCounter; // FPSカウンター
 
