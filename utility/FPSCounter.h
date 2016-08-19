@@ -38,7 +38,7 @@ public:
 		{
 			m_lastFPS = m_frameCounter;
 			m_fpsTimer = 0.0f;
-			m_frameCounter = 0.0f;
+			m_frameCounter = 0;
 		}
 	}
 
