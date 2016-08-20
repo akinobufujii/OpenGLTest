@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Skelton", "00_Skelton\00_Skelton.vcxproj", "{D5485D62-3318-4118-826B-475A344725BA}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02_TriangleByWorld", "02_TriangleByWorld\02_TriangleByWorld.vcxproj", "{362F9465-36F5-43F9-B3BA-2334156EF295}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_TriangleByScreen", "01_TriangleByScreen\01_TriangleByScreen.vcxproj", "{50E1D9DE-02F6-4955-92DA-8D6AF8A4A62F}"
 EndProject
 Global
@@ -23,6 +25,14 @@ Global
 		{D5485D62-3318-4118-826B-475A344725BA}.Release|x64.Build.0 = Release|x64
 		{D5485D62-3318-4118-826B-475A344725BA}.Release|x86.ActiveCfg = Release|Win32
 		{D5485D62-3318-4118-826B-475A344725BA}.Release|x86.Build.0 = Release|Win32
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Debug|x64.ActiveCfg = Debug|x64
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Debug|x64.Build.0 = Debug|x64
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Debug|x86.ActiveCfg = Debug|Win32
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Debug|x86.Build.0 = Debug|Win32
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Release|x64.ActiveCfg = Release|x64
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Release|x64.Build.0 = Release|x64
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Release|x86.ActiveCfg = Release|Win32
+		{362F9465-36F5-43F9-B3BA-2334156EF295}.Release|x86.Build.0 = Release|Win32
 		{50E1D9DE-02F6-4955-92DA-8D6AF8A4A62F}.Debug|x64.ActiveCfg = Debug|x64
 		{50E1D9DE-02F6-4955-92DA-8D6AF8A4A62F}.Debug|x64.Build.0 = Debug|x64
 		{50E1D9DE-02F6-4955-92DA-8D6AF8A4A62F}.Debug|x86.ActiveCfg = Debug|Win32
