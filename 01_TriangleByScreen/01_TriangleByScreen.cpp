@@ -1,6 +1,7 @@
 #define GLFW_INCLUDE_GLU
 #define GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WGL
+#define NOMINMAX
 
 #if defined(_WIN32)
 #pragma comment(lib, "OpenGL32.lib")
@@ -24,8 +25,8 @@
 // 頂点フォーマット
 struct VertexFormat
 {
-	GLfloat pos[2];
-//	GLfloat col[3];
+	GLfloat pos[3];
+//	GLfloat col[4];
 };
 
 //==============================================================================
@@ -47,13 +48,13 @@ GLuint	g_ibo;		// インデックスバッファオブジェクト
 std::vector<VertexFormat> g_vertexBuffer =
 {
 	//	頂点座標
-	//{ 1.0f,  1.0f, 0.0f, 0.0f },
-	//{ -1.0f, 1.0f, 0.0f, 0.0f },
-	//{ 0.0f, -1.0f, 0.0f, 0.0f },
-	{ -0.5f, -0.5f },
-	{ 0.5f, -0.5f },
-	{ 0.5f,  0.5f },
-	{ -0.5f,  0.5f }
+	{ 0.0f,  1.0f, 0.0f },
+	{ 1.0f,  -1.0f, 0.0f },
+	{ -1.0f, -1.0f, 0.0f },
+	//{ -0.5f, -0.5f },
+	//{ 0.5f, -0.5f },
+	//{ 0.5f,  0.5f },
+	//{ -0.5f,  0.5f }
 };
 
 //std::vector<VertexFormat> vertexBuffer =
@@ -72,7 +73,7 @@ bool initResource()
 	// シェーダ作成
 	// 頂点シェーダ読み込み
 	GLuint vertexShaderObj = glCreateShader(GL_VERTEX_SHADER);
-	if(readAndCompileShaderSource(vertexShaderObj, "D:/MySamples/OpenGLTest/01_TriangleByScreen/triangle.vert") == false)
+	if(readAndCompileShaderSource(vertexShaderObj, "triangle.vert") == false)
 	{
 		printf_s("頂点シェーダ読み込み失敗");
 		return false;
@@ -80,7 +81,7 @@ bool initResource()
 
 	// 頂点シェーダ読み込み
 	GLuint fragmentShaderObj = glCreateShader(GL_FRAGMENT_SHADER);
-	if(readAndCompileShaderSource(fragmentShaderObj, "D:/MySamples/OpenGLTest/01_TriangleByScreen/triangle.frag") == false)
+	if(readAndCompileShaderSource(fragmentShaderObj, "triangle.frag") == false)
 	{
 		printf_s("フラグメントシェーダ読み込み失敗");
 		return false;
@@ -109,7 +110,7 @@ bool initResource()
 	glBufferData(GL_ARRAY_BUFFER, g_vertexBuffer.size() * sizeof(VertexFormat), g_vertexBuffer.data()->pos, GL_STATIC_DRAW);
 
 	// 結合されている頂点バッファオブジェクトを attribute 変数から参照できるようにする
-	glVertexAttribPointer(0, ARRAYSIZE(g_vertexBuffer.data()->pos), GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, ARRAYSIZE(g_vertexBuffer.data()->pos), GL_FLOAT, GL_FALSE, sizeof(g_vertexBuffer.data()->pos), 0);
 	glEnableVertexAttribArray(0);
 
 	// 頂点バッファオブジェクトと頂点配列オブジェクトの結合を解除する
@@ -148,7 +149,7 @@ void Render()
 
 	// 図形の描画
 	glBindVertexArray(g_vao);
-	glDrawArrays(GL_QUADS, 0, g_vertexBuffer.size());
+	glDrawArrays(GL_TRIANGLES, 0, g_vertexBuffer.size());
 	glBindVertexArray(0);
 
 	glUseProgram(0);

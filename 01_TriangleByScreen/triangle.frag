@@ -2,9 +2,8 @@
 
 out vec4 outputColor;
 
-void main (void)
+void main()
 {
-	// フラグメントの色
-	//gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	// 繝輔Λ繧ｰ繝｡繝ｳ繝医�ｮ濶ｲ
 	outputColor = vec4(1.0, 0.0, 0.0, 1.0);
 }

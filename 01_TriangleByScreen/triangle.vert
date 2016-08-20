@@ -1,9 +1,9 @@
 #version 150 core
 
-in vec4 pos
+in vec4 pos;
 
-void main(void)
+void main()
 {
-	// í∏ì_à íu
+	// È†ÇÁÇπ‰ΩçÁΩÆ
 	gl_Position = pos;
 }

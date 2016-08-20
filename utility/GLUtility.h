@@ -3,50 +3,70 @@
 //==============================================================================
 #pragma once
 
+#include <fstream>
+#include <limits>
+#include <cassert>
+
 // シェーダーを読み込みコンパイルする
-bool readAndCompileShaderSource(GLuint shader, const char *file)
+bool readAndCompileShaderSource(GLuint shader, const char *filename)
 {
-	FILE* fp;
-	const GLchar* source;
-	GLsizei length;
-	
+	std::ifstream openFile;
+
 	// ファイルを開く
-	if(fopen_s(&fp, file, "r"))
+	openFile.open(filename, std::ios::in);
+	if(openFile.fail())
 	{
-		perror(file);
+		printf_s("ファイルオープン失敗");
 		return false;
 	}
 
-	// ファイルサイズ獲得
-	fseek(fp, 0L, SEEK_END);
-	length = ftell(fp);
+	// ファイルサイズ取得
+	openFile.ignore(std::numeric_limits<std::streamsize>::max());
+	std::streamsize length = openFile.gcount();
+	openFile.clear();
+	openFile.seekg(0, std::ios_base::beg);
 
 	// ファイルサイズ分のメモリを確保
-	source = new GLchar[length];
+	GLchar* source = new GLchar[length + 1];
 	if(source == nullptr)
 	{
 		printf_s("メモリ確保失敗");
 		return false;
 	}
 
-	// ファイルを先頭から読み込む
-	fseek(fp, 0L, SEEK_SET);
-	bool ret = fread((void *)source, 1, length, fp) != (size_t)length;
-	fclose(fp);
+	// ファイルの中身を読み込む
+	openFile.read(source, length);
+	openFile.close();
+
+	source[length] = '\0';	// 念のため終端を付け加える
+
+	// ※何故か変な文字列になる
+	std::string check = source;
 
 	// シェーダのソースプログラムのシェーダオブジェクトへの読み込み
-	if(ret)
-	{
-		printf_s("シェーダーファイルを読み込めませんでした:%s", file);
-	}
-	else
-	{
-		glShaderSource(shader, 1, &source, &length);
-		glCompileShader(shader);
-	}
+	glShaderSource(shader, 1, &source, nullptr);
+	glCompileShader(shader);
 
 	// 確保したメモリの開放
 	delete source;
+
+	GLint result;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
+
+	// ログを取得
+	if(result == GL_FALSE)
+	{
+		// サイズを取得
+		GLint log_length;
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
+
+		// 文字列を取得
+		GLsizei length;
+		GLchar* log = new GLchar[log_length];
+		glGetShaderInfoLog(shader, 0xffffff, &length, log);
+		assert(false);
+		delete log;
+	}
 
 	return true;
 }
