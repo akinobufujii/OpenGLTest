@@ -26,7 +26,7 @@
 struct VertexFormat
 {
 	GLfloat pos[3];
-//	GLfloat col[4];
+	GLfloat color[4];
 };
 
 //==============================================================================
@@ -48,22 +48,10 @@ GLuint	g_ibo;		// インデックスバッファオブジェクト
 std::vector<VertexFormat> g_vertexBuffer =
 {
 	//	頂点座標
-	{ 0.0f,  1.0f, 0.0f },
-	{ 1.0f,  -1.0f, 0.0f },
-	{ -1.0f, -1.0f, 0.0f },
-	//{ -0.5f, -0.5f },
-	//{ 0.5f, -0.5f },
-	//{ 0.5f,  0.5f },
-	//{ -0.5f,  0.5f }
+	{ { 0.0f,  1.0f, 0.0f },{ 1.0f, 0.0f, 0.0f, 1.0f } },
+	{ { 1.0f,  -1.0f, 0.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
+	{ { -1.0f, -1.0f, 0.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
 };
-
-//std::vector<VertexFormat> vertexBuffer =
-//{
-//	//	頂点座標				色
-//	{ { 1.0f,  1.0f, 0.0f },{ 1.0f, 0.0f, 0.0f } },
-//	{ { -1.0f,  1.0f, 0.0f },{ 0.0f, 1.0f, 0.0f } },
-//	{ { 0.0f, -1.0f, 0.0f },{ 0.0f, 0.0f, 1.0f } }
-//};
 
 //==============================================================================
 // リソースの初期化
@@ -94,8 +82,9 @@ bool initResource()
 	glAttachShader(g_program, fragmentShaderObj);
 	glDeleteShader(fragmentShaderObj);
 
-	// プログラムオブジェクトのリンク
+	// プログラムオブジェクトのリンク(各シェーダーへ引き渡すパラメータを登録する)
 	glBindAttribLocation(g_program, 0, "pos");
+	glBindAttribLocation(g_program, 1, "color");
 	glBindFragDataLocation(g_program, 0, "outputColor");
 	glLinkProgram(g_program);
 
@@ -107,11 +96,17 @@ bool initResource()
 	// 頂点バッファオブジェクト作成
 	glGenBuffers(1, &g_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, g_vbo);
-	glBufferData(GL_ARRAY_BUFFER, g_vertexBuffer.size() * sizeof(VertexFormat), g_vertexBuffer.data()->pos, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, g_vertexBuffer.size() * sizeof(VertexFormat), g_vertexBuffer.data(), GL_STATIC_DRAW);
 
 	// 結合されている頂点バッファオブジェクトを attribute 変数から参照できるようにする
-	glVertexAttribPointer(0, ARRAYSIZE(g_vertexBuffer.data()->pos), GL_FLOAT, GL_FALSE, sizeof(g_vertexBuffer.data()->pos), 0);
+	size_t offset = 0;
+	glVertexAttribPointer(0, ARRAYSIZE(VertexFormat::pos), GL_FLOAT, GL_FALSE, sizeof(VertexFormat), reinterpret_cast<void*>(offset));
 	glEnableVertexAttribArray(0);
+	offset += sizeof(VertexFormat::pos);
+
+	glVertexAttribPointer(1, ARRAYSIZE(VertexFormat::color), GL_FLOAT, GL_FALSE, sizeof(VertexFormat), reinterpret_cast<void*>(offset));
+	glEnableVertexAttribArray(1);
+	offset += sizeof(VertexFormat::color);
 
 	// 頂点バッファオブジェクトと頂点配列オブジェクトの結合を解除する
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
