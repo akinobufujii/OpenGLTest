@@ -25,8 +25,8 @@
 // 頂点フォーマット
 struct VertexFormat
 {
-	GLfloat pos[3];
-	GLfloat color[4];
+	GLfloat pos[3];		// 座標
+	GLfloat color[4];	// 色
 };
 
 //==============================================================================
@@ -45,12 +45,19 @@ GLuint	g_vao;		// 頂点配列オブジェクト
 GLuint	g_vbo;		// 頂点バッファオブジェクト
 GLuint	g_ibo;		// インデックスバッファオブジェクト
 
+// 頂点バッファ
 std::vector<VertexFormat> g_vertexBuffer =
 {
-	//	頂点座標
+	//	頂点座標			// 色
 	{ { 0.0f,  1.0f, 0.0f },{ 1.0f, 0.0f, 0.0f, 1.0f } },
 	{ { 1.0f,  -1.0f, 0.0f },{ 0.0f, 1.0f, 0.0f, 1.0f } },
 	{ { -1.0f, -1.0f, 0.0f },{ 0.0f, 0.0f, 1.0f, 1.0f } },
+};
+
+// インデックスバッファ
+std::vector<unsigned int> g_indexBuffer =
+{
+	0, 1, 2
 };
 
 //==============================================================================
@@ -88,7 +95,6 @@ bool initResource()
 	glBindFragDataLocation(g_program, 0, "outputColor");
 	glLinkProgram(g_program);
 
-	// 頂点バッファオブジェクトセットアップ
 	// 頂点配列オブジェクト作成
 	glGenVertexArrays(1, &g_vao);
 	glBindVertexArray(g_vao);
@@ -108,7 +114,12 @@ bool initResource()
 	glEnableVertexAttribArray(1);
 	offset += sizeof(VertexFormat::color);
 
-	// 頂点バッファオブジェクトと頂点配列オブジェクトの結合を解除する
+	// インデックスバッファオブジェクト作成
+	glGenBuffers(1, &g_ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, g_indexBuffer.size() * sizeof(unsigned int), g_indexBuffer.data(), GL_STATIC_DRAW);
+
+	// 各種バインドを解除する
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
@@ -120,6 +131,9 @@ bool initResource()
 //==============================================================================
 void destroyResource()
 {
+	// インデックスバッファオブジェクト解放
+	glDeleteBuffers(1, &g_ibo);
+
 	// 頂点バッファオブジェクト解放
 	glDeleteBuffers(1, &g_vbo);
 
@@ -139,14 +153,17 @@ void Render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearColor(0, count, 1, 1);
 
-	// シェーダプログラムの使用
+	// 使用するシェーダを設定
 	glUseProgram(g_program);
 
-	// 図形の描画
+	// 頂点配列オブジェクトを設定
 	glBindVertexArray(g_vao);
-	glDrawArrays(GL_TRIANGLES, 0, g_vertexBuffer.size());
-	glBindVertexArray(0);
 
+	// 描画
+	glDrawElements(GL_TRIANGLES, g_indexBuffer.size(), GL_UNSIGNED_INT, nullptr);
+
+	// 各種設定を外す
+	glBindVertexArray(0);
 	glUseProgram(0);
 }
 
