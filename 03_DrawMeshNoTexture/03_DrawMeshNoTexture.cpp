@@ -1,4 +1,4 @@
-#define GLFW_INCLUDE_GLU
+ï»¿#define GLFW_INCLUDE_GLU
 #define GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WGL
 #define NOMINMAX
@@ -24,68 +24,68 @@
 #include "../utility/MeshImporter.h"
 
 //==============================================================================
-// Šeí’è‹`
+// å„ç¨®å®šç¾©
 //==============================================================================
-// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@—p\‘¢‘Ì
+// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ç”¨æ§‹é€ ä½“
 struct UB_MATRICES
 {
-	glm::mat4	projection;	// “Š‰es—ñ
-	glm::mat4	view;		// ‹üs—ñ
-	glm::mat4	world;		// ƒ[ƒ‹ƒhs—ñ
+	glm::mat4	projection;	// æŠ•å½±è¡Œåˆ—
+	glm::mat4	view;		// è¦–ç·šè¡Œåˆ—
+	glm::mat4	world;		// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 };
 
 //==============================================================================
-// ’è”
+// å®šæ•°
 //==============================================================================
-static const char*	WINDOW_TITLE		= "03_DrawMeshNoTexture";	// ƒEƒBƒ“ƒhƒE–¼
-static const bool	IS_FULLSCREEN_MODE	= false;					// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒhitrue‚Åƒtƒ‹ƒXƒNƒŠ[ƒ“j
-static const int	WINDOW_WIDTH		= 1280;						// ƒEƒBƒ“ƒhƒE‚Ì‰¡•
-static const int	WINDOW_HEIGHT		= 720;						// ƒEƒBƒ“ƒhƒE‚Ìc•
+static const char*	WINDOW_TITLE		= "03_DrawMeshNoTexture";	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å
+static const bool	IS_FULLSCREEN_MODE	= false;					// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ï¼ˆtrueã§ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ï¼‰
+static const int	WINDOW_WIDTH		= 1280;						// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¨ªå¹…
+static const int	WINDOW_HEIGHT		= 720;						// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦å¹…
 
 //==============================================================================
-// ƒOƒ[ƒoƒ‹•Ï”
+// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
 //==============================================================================
-GLuint	g_program;			// ƒVƒF[ƒ_ƒvƒƒOƒ‰ƒ€
-GLuint	g_vao;				// ’¸“_”z—ñƒIƒuƒWƒFƒNƒg
-GLuint	g_vbo;				// ’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg
-GLuint	g_ibo;				// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg
-GLuint	g_ubo;				// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg
-GLuint	g_blockIndex;		// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@‚ÌƒuƒƒbƒNƒCƒ“ƒfƒbƒNƒX
-GLuint	g_indexBufferSize;	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒTƒCƒY
+GLuint	g_program;			// ã‚·ã‚§ãƒ¼ãƒ€ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
+GLuint	g_vao;				// é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+GLuint	g_vbo;				// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+GLuint	g_ibo;				// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+GLuint	g_ubo;				// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+GLuint	g_blockIndex;		// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+GLuint	g_indexBufferSize;	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 
-// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@—p•Ï”
+// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ç”¨å¤‰æ•°
 UB_MATRICES g_ubGlobalValue;
 
 //==============================================================================
-// ƒŠƒ\[ƒX‚Ì‰Šú‰»
+// ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 //==============================================================================
 bool initResource()
 {
-	// ƒVƒF[ƒ_ì¬
-	// ’¸“_ƒVƒF[ƒ_“Ç‚İ‚İ
+	// ã‚·ã‚§ãƒ¼ãƒ€ä½œæˆ
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€èª­ã¿è¾¼ã¿
 	GLuint vertexShaderObj = glCreateShader(GL_VERTEX_SHADER);
 	if(readAndCompileShaderSource(vertexShaderObj, "mesh.vert") == false)
 	{
-		printf_s("’¸“_ƒVƒF[ƒ_“Ç‚İ‚İ¸”s");
+		printf_s("é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€èª­ã¿è¾¼ã¿å¤±æ•—");
 		return false;
 	}
 
-	// ’¸“_ƒVƒF[ƒ_“Ç‚İ‚İ
+	// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€èª­ã¿è¾¼ã¿
 	GLuint fragmentShaderObj = glCreateShader(GL_FRAGMENT_SHADER);
 	if(readAndCompileShaderSource(fragmentShaderObj, "mesh.frag") == false)
 	{
-		printf_s("ƒtƒ‰ƒOƒƒ“ƒgƒVƒF[ƒ_“Ç‚İ‚İ¸”s");
+		printf_s("ãƒ•ãƒ©ã‚°ãƒ¡ãƒ³ãƒˆã‚·ã‚§ãƒ¼ãƒ€èª­ã¿è¾¼ã¿å¤±æ•—");
 		return false;
 	}
 
-	// ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚Ìæ‚è•t‚¯
+	// ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å–ã‚Šä»˜ã‘
 	g_program = glCreateProgram();
 	glAttachShader(g_program, vertexShaderObj);
 	glDeleteShader(vertexShaderObj);
 	glAttachShader(g_program, fragmentShaderObj);
 	glDeleteShader(fragmentShaderObj);
 
-	// ƒvƒƒOƒ‰ƒ€ƒIƒuƒWƒFƒNƒg‚ÌƒŠƒ“ƒN(ŠeƒVƒF[ƒ_[‚Öˆø‚«“n‚·ƒpƒ‰ƒ[ƒ^‚ğ“o˜^‚·‚é)
+	// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒªãƒ³ã‚¯(å„ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸å¼•ãæ¸¡ã™ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’ç™»éŒ²ã™ã‚‹)
 	glBindAttribLocation(g_program, 0, "inPos");
 	glBindAttribLocation(g_program, 1, "inUV");
 	glBindAttribLocation(g_program, 2, "inNormal");
@@ -93,20 +93,20 @@ bool initResource()
 	glBindFragDataLocation(g_program, 0, "outputColor");
 	glLinkProgram(g_program);
 
-	// ƒƒbƒVƒ…“Ç‚İ‚İ
+	// ãƒ¡ãƒƒã‚·ãƒ¥èª­ã¿è¾¼ã¿
 	MeshImporter meshData;
 	meshData.loadMesh("Bandouiruka0.3ds", 10);
 
-	// ’¸“_”z—ñƒIƒuƒWƒFƒNƒgì¬
+	// é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
 	glGenVertexArrays(1, &g_vao);
 	glBindVertexArray(g_vao);
 
-	// ’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒgì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
 	glGenBuffers(1, &g_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, g_vbo);
 	glBufferData(GL_ARRAY_BUFFER, meshData.getMeshDatum()[0].vertices.size() * sizeof(MeshImporter::MeshData::VertexFormat), meshData.getMeshDatum()[0].vertices.data(), GL_STATIC_DRAW);
 
-	// Œ‹‡‚³‚ê‚Ä‚¢‚é’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğ attribute •Ï”‚©‚çQÆ‚Å‚«‚é‚æ‚¤‚É‚·‚é
+	// çµåˆã•ã‚Œã¦ã„ã‚‹é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ attribute å¤‰æ•°ã‹ã‚‰å‚ç…§ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
 	size_t offset = 0;
 	glVertexAttribPointer(0, sizeof(MeshImporter::MeshData::VertexFormat::m_pos) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(MeshImporter::MeshData::VertexFormat), reinterpret_cast<void*>(offset));
 	glEnableVertexAttribArray(0);
@@ -124,17 +124,17 @@ bool initResource()
 	glEnableVertexAttribArray(3);
 	offset += sizeof(MeshImporter::MeshData::VertexFormat::m_color);
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒgì¬
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆä½œæˆ
 	glGenBuffers(1, &g_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, meshData.getMeshDatum()[0].indices.size() * sizeof(unsigned int), meshData.getMeshDatum()[0].indices.data(), GL_STATIC_DRAW);
 
 	g_indexBufferSize = meshData.getMeshDatum()[0].indices.size();
 
-	// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğì¬
+	// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
 	glGenBuffers(1, &g_ubo);
 	
-	// ŠeíƒoƒCƒ“ƒh‚ğ‰ğœ‚·‚é
+	// å„ç¨®ãƒã‚¤ãƒ³ãƒ‰ã‚’è§£é™¤ã™ã‚‹
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -143,29 +143,29 @@ bool initResource()
 }
 
 //==============================================================================
-// ƒŠƒ\[ƒX‚Ì”jŠü
+// ãƒªã‚½ãƒ¼ã‚¹ã®ç ´æ£„
 //==============================================================================
 void destroyResource()
 {
-	// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‰ğ•ú
+	// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
 	glDeleteBuffers(1, &g_ubo);
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‰ğ•ú
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
 	glDeleteBuffers(1, &g_ibo);
 
-	// ’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‰ğ•ú
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
 	glDeleteBuffers(1, &g_vbo);
 
-	// ’¸“_”z—ñƒIƒuƒWƒFƒNƒg‰ğ•ú
+	// é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
 	glDeleteVertexArrays(1, &g_vao);
 }
 
 //==============================================================================
-// •`‰æ
+// æç”»
 //==============================================================================
 void Render()
 {
-	// [“xƒeƒXƒg—LŒø‰»
+	// æ·±åº¦ãƒ†ã‚¹ãƒˆæœ‰åŠ¹åŒ–
 	glEnable(GL_DEPTH_TEST);
 
 	static float count = 0;
@@ -176,10 +176,10 @@ void Render()
 	glClearColor(0, count, 1, 1);
 	glClearDepth(1.0f);
 
-	// g—p‚·‚éƒVƒF[ƒ_‚ğİ’è
+	// ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ã‚’è¨­å®š
 	glUseProgram(g_program);
 
-	// Šeís—ñ‚ğXV
+	// å„ç¨®è¡Œåˆ—ã‚’æ›´æ–°
 	g_ubGlobalValue.projection = glm::perspective(glm::radians(60.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.1f, 1000.f);
 
 	g_ubGlobalValue.view = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -2.5));
@@ -190,35 +190,35 @@ void Render()
 	g_ubGlobalValue.world = glm::mat4();
 	g_ubGlobalValue.world = glm::rotate(g_ubGlobalValue.world, glm::radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
 	
-	// ƒ†ƒjƒtƒH[ƒ€ƒoƒbƒtƒ@‚ğİ’è
+	// ãƒ¦ãƒ‹ãƒ•ã‚©ãƒ¼ãƒ ãƒãƒƒãƒ•ã‚¡ã‚’è¨­å®š
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, g_ubo);
 	glBufferData(GL_UNIFORM_BUFFER, sizeof(UB_MATRICES), &g_ubGlobalValue, GL_DYNAMIC_DRAW);
 	GLuint blockIndex = glGetUniformBlockIndex(g_program, "MATRICES");
 	glUniformBlockBinding(g_program, blockIndex, 0);
 
-	// ’¸“_”z—ñƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	glBindVertexArray(g_vao);
 
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg‚ğİ’è
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®š
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ibo);
 
-	// •`‰æ
+	// æç”»
 	glDrawElements(GL_TRIANGLES, g_indexBufferSize, GL_UNSIGNED_INT, nullptr);
 
-	// Šeíİ’è‚ğŠO‚·
+	// å„ç¨®è¨­å®šã‚’å¤–ã™
 	glBindVertexArray(0);
 	glUseProgram(0);
 }
 
 //==============================================================================
-// ƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg
+// ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 //==============================================================================
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-	// GLFW‰Šú‰»
+	// GLFWåˆæœŸåŒ–
 	glfwInit();
 
-	// ƒEƒBƒ“ƒhƒEì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½œæˆ
 	GLFWwindow* pWindow = glfwCreateWindow(
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
@@ -226,10 +226,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		(IS_FULLSCREEN_MODE)? glfwGetPrimaryMonitor() : nullptr,
 		nullptr);
 
-	// Œ»İ‚ÌƒEƒBƒ“ƒhƒE‚ğƒXƒŒƒbƒh‚É“n‚·
+	// ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¹ãƒ¬ãƒƒãƒ‰ã«æ¸¡ã™
 	glfwMakeContextCurrent(pWindow);
 
-	// GLEW‰Šú‰»
+	// GLEWåˆæœŸåŒ–
 	GLenum error = glewInit();
 	if(error != GLEW_OK)
 	{
@@ -241,15 +241,15 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 
 	glfwSwapInterval(0);
 
-	// ƒŠƒ\[ƒX‚Ì‰Šú‰»
+	// ãƒªã‚½ãƒ¼ã‚¹ã®åˆæœŸåŒ–
 	if(initResource() == false)
 	{
 		return 1;
 	}
 
-	FPSCounter fpsCounter; // FPSƒJƒEƒ“ƒ^[
+	FPSCounter fpsCounter; // FPSã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
-	// OpenGL•`‰æƒ‹[ƒv
+	// OpenGLæç”»ãƒ«ãƒ¼ãƒ—
 	while(glfwWindowShouldClose(pWindow) == 0)
 	{
 		fpsCounter.beginCount();
@@ -265,10 +265,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		SetWindowText((glfwGetWin32Window(pWindow)), windowTitle.c_str());
 	}
 
-	// ƒŠƒ\[ƒX‚Ì”jŠü
+	// ãƒªã‚½ãƒ¼ã‚¹ã®ç ´æ£„
 	destroyResource();
 
-	// GLFWI—¹
+	// GLFWçµ‚äº†
 	glfwTerminate();
 
 	return 0;

@@ -1,4 +1,4 @@
-#define GLFW_INCLUDE_GLU
+ï»¿#define GLFW_INCLUDE_GLU
 #define GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WGL
 
@@ -15,13 +15,13 @@
 
 #include "../utility/FPSCounter.h"
 
-static const char*	WINDOW_TITLE		= "00_Skelton";	// ƒEƒBƒ“ƒhƒE–¼
-static const bool	IS_FULLSCREEN_MODE	= false;		// ƒtƒ‹ƒXƒNƒŠ[ƒ“ƒ‚[ƒhitrue‚Åƒtƒ‹ƒXƒNƒŠ[ƒ“j
-static const int	WINDOW_WIDTH		= 1280;			// ƒEƒBƒ“ƒhƒE‚Ì‰¡•
-static const int	WINDOW_HEIGHT		= 720;			// ƒEƒBƒ“ƒhƒE‚Ìc•
+static const char*	WINDOW_TITLE		= "00_Skelton";	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å
+static const bool	IS_FULLSCREEN_MODE	= false;		// ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ãƒ¢ãƒ¼ãƒ‰ï¼ˆtrueã§ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ï¼‰
+static const int	WINDOW_WIDTH		= 1280;			// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æ¨ªå¹…
+static const int	WINDOW_HEIGHT		= 720;			// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ç¸¦å¹…
 
 //==============================================================================
-// •`‰æ
+// æç”»
 //==============================================================================
 void Render()
 {
@@ -34,14 +34,14 @@ void Render()
 }
 
 //==============================================================================
-// ƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg
+// ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 //==============================================================================
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-	// GLFW‰Šú‰»
+	// GLFWåˆæœŸåŒ–
 	glfwInit();
 
-	// ƒEƒBƒ“ƒhƒEì¬
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½œæˆ
 	GLFWwindow* pWindow = glfwCreateWindow(
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
@@ -49,17 +49,17 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		(IS_FULLSCREEN_MODE)? glfwGetPrimaryMonitor() : nullptr,
 		nullptr);
 
-	// Œ»İ‚ÌƒEƒBƒ“ƒhƒE‚ğƒXƒŒƒbƒh‚É“n‚·
+	// ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ã‚¹ãƒ¬ãƒƒãƒ‰ã«æ¸¡ã™
 	glfwMakeContextCurrent(pWindow);
 
-	// GLEW‰Šú‰»
+	// GLEWåˆæœŸåŒ–
 	glewInit();
 
 	glfwSwapInterval(0);
 
-	FPSCounter fpsCounter; // FPSƒJƒEƒ“ƒ^[
+	FPSCounter fpsCounter; // FPSã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 
-	// OpenGL•`‰æƒ‹[ƒv
+	// OpenGLæç”»ãƒ«ãƒ¼ãƒ—
 	while(glfwWindowShouldClose(pWindow) == 0)
 	{
 		fpsCounter.beginCount();
@@ -75,7 +75,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		SetWindowText((glfwGetWin32Window(pWindow)), windowTitle.c_str());
 	}
 
-	// GLFWI—¹
+	// GLFWçµ‚äº†
 	glfwTerminate();
 
 	return 0;

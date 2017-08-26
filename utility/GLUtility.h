@@ -1,4 +1,4 @@
-//==============================================================================
+ï»¿//==============================================================================
 // OpenGL Utility
 //==============================================================================
 #pragma once
@@ -7,60 +7,60 @@
 #include <limits>
 #include <cassert>
 
-// ƒVƒF[ƒ_[‚ğ“Ç‚İ‚İƒRƒ“ƒpƒCƒ‹‚·‚é
+// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’èª­ã¿è¾¼ã¿ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹
 bool readAndCompileShaderSource(GLuint shader, const char *filename)
 {
 	std::ifstream openFile;
 
-	// ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	openFile.open(filename, std::ios::in);
 	if(openFile.fail())
 	{
-		printf_s("ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s");
+		printf_s("ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—");
 		return false;
 	}
 
-	// ƒtƒ@ƒCƒ‹ƒTƒCƒYæ“¾
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºå–å¾—
 	openFile.ignore(std::numeric_limits<std::streamsize>::max());
 	std::streamsize length = openFile.gcount();
 	openFile.clear();
 	openFile.seekg(0, std::ios_base::beg);
 
-	// ƒtƒ@ƒCƒ‹ƒTƒCƒY•ª‚Ìƒƒ‚ƒŠ‚ğŠm•Û
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºåˆ†ã®ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿
 	GLchar* source = new GLchar[length + 1];
 	if(source == nullptr)
 	{
-		printf_s("ƒƒ‚ƒŠŠm•Û¸”s");
+		printf_s("ãƒ¡ãƒ¢ãƒªç¢ºä¿å¤±æ•—");
 		return false;
 	}
 
-	// ƒtƒ@ƒCƒ‹‚Ì’†g‚ğ“Ç‚İ‚Ş
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’èª­ã¿è¾¼ã‚€
 	openFile.read(source, length);
 	openFile.close();
 
-	source[length] = '\0';	// ”O‚Ì‚½‚ßI’[‚ğ•t‚¯‰Á‚¦‚é
+	source[length] = '\0';	// å¿µã®ãŸã‚çµ‚ç«¯ã‚’ä»˜ã‘åŠ ãˆã‚‹
 
-	// ¦‰½ŒÌ‚©•Ï‚È•¶š—ñ‚É‚È‚é
+	// â€»ä½•æ•…ã‹å¤‰ãªæ–‡å­—åˆ—ã«ãªã‚‹
 	std::string check = source;
 
-	// ƒVƒF[ƒ_‚Ìƒ\[ƒXƒvƒƒOƒ‰ƒ€‚ÌƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg‚Ö‚Ì“Ç‚İ‚İ
+	// ã‚·ã‚§ãƒ¼ãƒ€ã®ã‚½ãƒ¼ã‚¹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®èª­ã¿è¾¼ã¿
 	glShaderSource(shader, 1, &source, nullptr);
 	glCompileShader(shader);
 
-	// Šm•Û‚µ‚½ƒƒ‚ƒŠ‚ÌŠJ•ú
+	// ç¢ºä¿ã—ãŸãƒ¡ãƒ¢ãƒªã®é–‹æ”¾
 	delete source;
 
 	GLint result;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 
-	// ƒƒO‚ğæ“¾
+	// ãƒ­ã‚°ã‚’å–å¾—
 	if(result == GL_FALSE)
 	{
-		// ƒTƒCƒY‚ğæ“¾
+		// ã‚µã‚¤ã‚ºã‚’å–å¾—
 		GLint log_length;
 		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
 
-		// •¶š—ñ‚ğæ“¾
+		// æ–‡å­—åˆ—ã‚’å–å¾—
 		GLsizei length;
 		GLchar* log = new GLchar[log_length];
 		glGetShaderInfoLog(shader, 0xffffff, &length, log);
@@ -71,7 +71,7 @@ bool readAndCompileShaderSource(GLuint shader, const char *filename)
 	return true;
 }
 
-// ƒVƒF[ƒ_‚Ìî•ñ‚ğ•\¦‚·‚é
+// ã‚·ã‚§ãƒ¼ãƒ€ã®æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹
 void printShaderInfoLog(GLuint shader)
 {
 	GLsizei bufSize;
@@ -97,7 +97,7 @@ void printShaderInfoLog(GLuint shader)
 	}
 }
 
-// ƒvƒƒOƒ‰ƒ€‚Ìî•ñ‚ğ•\¦‚·‚é
+// ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®æƒ…å ±ã‚’è¡¨ç¤ºã™ã‚‹
 void printProgramInfoLog(GLuint program)
 {
 	GLsizei bufSize;

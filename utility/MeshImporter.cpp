@@ -1,47 +1,47 @@
-//==============================================================================
-// Assimp‚Å‚ÌƒƒbƒVƒ…ƒCƒ“ƒ|[ƒ^[
+ï»¿//==============================================================================
+// Assimpã§ã®ãƒ¡ãƒƒã‚·ãƒ¥ã‚¤ãƒ³ãƒãƒ¼ã‚¿ãƒ¼
 //==============================================================================
 #include "MeshImporter.h"
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 MeshImporter::MeshImporter()
 {
 }
 
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 MeshImporter::~MeshImporter()
 {
 }
 
-// ƒƒbƒVƒ…“Ç‚İ‚İ
+// ãƒ¡ãƒƒã‚·ãƒ¥èª­ã¿è¾¼ã¿
 bool MeshImporter::loadMesh(const std::string& filename, float scale, bool isFlipY)
 {
 	Assimp::Importer importer;
 
-	// ƒtƒ@ƒCƒ‹‚©‚çƒV[ƒ“ì¬
+	// ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã‚·ãƒ¼ãƒ³ä½œæˆ
 	const aiScene* pScene = importer.ReadFile(filename, aiProcess_FlipWindingOrder | aiProcess_Triangulate | aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals);
 
 	if(pScene)
 	{
 		m_mashDatum.resize(pScene->mNumMeshes);
 
-		// ƒƒbƒVƒ…ƒf[ƒ^‚ğ‰Šú‰»‚µ‚Äs‚­
+		// ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã‚’åˆæœŸåŒ–ã—ã¦è¡Œã
 		for(unsigned int i = 0; i < m_mashDatum.size(); ++i)
 		{
 			const aiMesh* pMesh = pScene->mMeshes[i];
 
-			// ƒfƒBƒtƒ…[ƒYƒJƒ‰[Šl“¾
+			// ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºã‚«ãƒ©ãƒ¼ç²å¾—
 			aiColor4D diffuseColor(0.f, 0.f, 0.f, 0.0f);
 			pScene->mMaterials[pMesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
 
-			// ƒeƒNƒXƒ`ƒƒƒpƒX‚ğŠl“¾
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‘ã‚¹ã‚’ç²å¾—
 			aiString path;
 			pScene->mMaterials[pMesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			m_mashDatum[i].textureName = path.C_Str();
 
 			aiVector3D ZERO_3D(0.0f, 0.0f, 0.0f);
 
-			// ’¸“_î•ñŠi”[
+			// é ‚ç‚¹æƒ…å ±æ ¼ç´
 			for(unsigned int j = 0; j < pMesh->mNumVertices; ++j)
 			{
 				aiVector3D* pTexCoord;
@@ -54,12 +54,12 @@ bool MeshImporter::loadMesh(const std::string& filename, float scale, bool isFli
 					pTexCoord = &ZERO_3D;
 				}
 
-				// Texcoord‚ÌVÀ•W‚ª‹t“]‚µ‚Ä‚¢‚é‚Ì‚Å‹t“]‚³‚¹‚é
+				// Texcoordã®Våº§æ¨™ãŒé€†è»¢ã—ã¦ã„ã‚‹ã®ã§é€†è»¢ã•ã›ã‚‹
 				pTexCoord->y = 1 - pTexCoord->y;
 
 				aiVector3D vertex = pMesh->mVertices[j] * scale;
 
-				// ã‰º‚ğƒtƒŠƒbƒv‚³‚¹‚é
+				// ä¸Šä¸‹ã‚’ãƒ•ãƒªãƒƒãƒ—ã•ã›ã‚‹
 				if(isFlipY)
 				{
 					vertex.y *= -1;
@@ -72,12 +72,12 @@ bool MeshImporter::loadMesh(const std::string& filename, float scale, bool isFli
 					diffuseColor);
 			}
 
-			// –Êî•ñ‚©‚çƒCƒ“ƒfƒbƒNƒXî•ñ‚ğŠl“¾
+			// é¢æƒ…å ±ã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æƒ…å ±ã‚’ç²å¾—
 			for(unsigned int j = 0; j < pMesh->mNumFaces; j++)
 			{
 				const aiFace& face = pMesh->mFaces[j];
 
-				// OŠp‰»‚µ‚Ä‚¢‚é‚Í‚¸‚È‚Ì‚Å3ˆÈŠO‚ÍƒXƒ‹[
+				// ä¸‰è§’åŒ–ã—ã¦ã„ã‚‹ã¯ãšãªã®ã§3ä»¥å¤–ã¯ã‚¹ãƒ«ãƒ¼
 				if(face.mNumIndices != 3)
 				{
 					continue;

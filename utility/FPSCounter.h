@@ -1,5 +1,5 @@
-//==============================================================================
-// FPSƒJƒEƒ“ƒ^[
+ï»¿//==============================================================================
+// FPSã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
 //==============================================================================
 #pragma once
 
@@ -9,9 +9,9 @@ class FPSCounter
 {
 public:
 	//==========================================================================
-	// ƒƒ\ƒbƒh
+	// ãƒ¡ã‚½ãƒƒãƒ‰
 	//==========================================================================
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	FPSCounter()
 		: m_frameCounter(0)
 		, m_lastFPS(0)
@@ -20,16 +20,16 @@ public:
 	{
 	}
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~FPSCounter(){}
 
-	// FPSƒJƒEƒ“ƒgŠJn
+	// FPSã‚«ã‚¦ãƒ³ãƒˆé–‹å§‹
 	void beginCount()
 	{
 		m_startTime = std::chrono::high_resolution_clock::now();
 	}
 
-	// FPSƒJƒEƒ“ƒgI—¹
+	// FPSã‚«ã‚¦ãƒ³ãƒˆçµ‚äº†
 	void endCount()
 	{
 		m_fpsTimer += std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() - m_startTime).count();
@@ -42,7 +42,7 @@ public:
 		}
 	}
 
-	// ÅŒã‚É‹L˜^‚µ‚½FPS‚ğŠl“¾
+	// æœ€å¾Œã«è¨˜éŒ²ã—ãŸFPSã‚’ç²å¾—
 	unsigned int getLastFPS() const
 	{
 		return m_lastFPS;
@@ -50,10 +50,10 @@ public:
 
 private:
 	//==========================================================================
-	// ƒtƒB[ƒ‹ƒh
+	// ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 	//==========================================================================
-	unsigned int							m_frameCounter;	// ƒtƒŒ[ƒ€ƒJƒEƒ“ƒ^
-	unsigned int							m_lastFPS;		// ÅŒã‚É‹L˜^‚µ‚½FPS
-	float									m_fpsTimer;		// FPSŒvZƒ^ƒCƒ}[
-	std::chrono::steady_clock::time_point	m_startTime;	// ŠJnŠÔ‹L˜^—p
+	unsigned int							m_frameCounter;	// ãƒ•ãƒ¬ãƒ¼ãƒ ã‚«ã‚¦ãƒ³ã‚¿
+	unsigned int							m_lastFPS;		// æœ€å¾Œã«è¨˜éŒ²ã—ãŸFPS
+	float									m_fpsTimer;		// FPSè¨ˆç®—ã‚¿ã‚¤ãƒãƒ¼
+	std::chrono::steady_clock::time_point	m_startTime;	// é–‹å§‹æ™‚é–“è¨˜éŒ²ç”¨
 };
