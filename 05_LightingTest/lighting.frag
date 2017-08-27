@@ -10,5 +10,5 @@ layout (location = 0) out vec4 outputColor;
 void main()
 {
 	// フラグメントの色
-	outputColor = texture(samplerColorMap, inColor.xy);
+	outputColor = texture(samplerColorMap, inUV) * inColor;
 }

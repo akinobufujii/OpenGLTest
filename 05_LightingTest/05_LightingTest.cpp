@@ -30,11 +30,12 @@
 // 各種定義
 //==============================================================================
 // ユニフォームバッファ用構造体
-struct UB_MATRICES
+struct UB_VALUES
 {
 	glm::mat4	projection;	// 投影行列
 	glm::mat4	view;		// 視線行列
 	glm::mat4	world;		// ワールド行列
+	glm::vec3	lightDir;	// ライティング方向
 };
 
 //==============================================================================
@@ -58,7 +59,7 @@ GLuint	g_indexBufferSize;	// インデックスバッファサイズ
 GLuint	g_texture;			// テクスチャ
 
 // ユニフォームバッファ用変数
-UB_MATRICES g_ubGlobalValue;
+UB_VALUES g_ubGlobalValue;
 
 //==============================================================================
 // リソースの初期化
@@ -68,15 +69,15 @@ bool initResource()
 	// シェーダ作成
 	// 頂点シェーダ読み込み
 	GLuint vertexShaderObj = glCreateShader(GL_VERTEX_SHADER);
-	if(readAndCompileShaderSource(vertexShaderObj, "mesh.vert") == false)
+	if(readAndCompileShaderSource(vertexShaderObj, "lighting.vert") == false)
 	{
 		printf_s("頂点シェーダ読み込み失敗");
 		return false;
 	}
 
-	// 頂点シェーダ読み込み
+	// フラグメントシェーダ読み込み
 	GLuint fragmentShaderObj = glCreateShader(GL_FRAGMENT_SHADER);
-	if(readAndCompileShaderSource(fragmentShaderObj, "mesh.frag") == false)
+	if(readAndCompileShaderSource(fragmentShaderObj, "lighting.frag") == false)
 	{
 		printf_s("フラグメントシェーダ読み込み失敗");
 		return false;
@@ -193,7 +194,7 @@ void Render()
 	count = fmodf(count, 1.0f);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0, count, 1, 1);
+	glClearColor(0, 0, 1, 1);
 	glClearDepth(1.0f);
 
 	// 使用するシェーダを設定
@@ -209,11 +210,13 @@ void Render()
 	rotateY = fmodf(rotateY, 360.0f);
 	g_ubGlobalValue.world = glm::mat4();
 	g_ubGlobalValue.world = glm::rotate(g_ubGlobalValue.world, glm::radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
+
+	g_ubGlobalValue.lightDir = glm::normalize(glm::vec3(-1.0f, -1.0f, 1.0f));
 	
 	// ユニフォームバッファを設定
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, g_ubo);
-	glBufferData(GL_UNIFORM_BUFFER, sizeof(UB_MATRICES), &g_ubGlobalValue, GL_DYNAMIC_DRAW);
-	GLuint blockIndex = glGetUniformBlockIndex(g_program, "MATRICES");
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(UB_VALUES), &g_ubGlobalValue, GL_DYNAMIC_DRAW);
+	GLuint blockIndex = glGetUniformBlockIndex(g_program, "VALUES");
 	glUniformBlockBinding(g_program, blockIndex, 0);
 
 	// テクスチャを設定
