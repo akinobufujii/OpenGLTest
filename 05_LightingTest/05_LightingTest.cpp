@@ -35,7 +35,8 @@ struct UB_VALUES
 	glm::mat4	projection;	// 投影行列
 	glm::mat4	view;		// 視線行列
 	glm::mat4	world;		// ワールド行列
-	glm::vec3	lightDir;	// ライティング方向
+	glm::vec4	lightDir;	// ライティング方向
+	glm::vec4	eyeDir;		// 視線方向
 };
 
 //==============================================================================
@@ -203,7 +204,9 @@ void Render()
 	// 各種行列を更新
 	g_ubGlobalValue.projection = glm::perspective(glm::radians(60.0f), static_cast<float>(WINDOW_WIDTH) / static_cast<float>(WINDOW_HEIGHT), 0.1f, 1000.f);
 
-	g_ubGlobalValue.view = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -2.5));
+	glm::vec3 eyePos(0.0f, 0.0f, 2.5f);
+	glm::vec3 lookPos(0.0f, 0.0f, 0.0f);
+	g_ubGlobalValue.view = glm::lookAtRH(eyePos, lookPos, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	static float rotateY = 0.0f;
 	rotateY += 0.1f;
@@ -211,7 +214,9 @@ void Render()
 	g_ubGlobalValue.world = glm::mat4();
 	g_ubGlobalValue.world = glm::rotate(g_ubGlobalValue.world, glm::radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	g_ubGlobalValue.lightDir = glm::normalize(glm::vec3(1.0f, -1.0f, -1.0f));
+	g_ubGlobalValue.lightDir = glm::vec4(glm::normalize(glm::vec3(1.0f, -1.0f, -1.0f)), 1.0f);
+
+	g_ubGlobalValue.eyeDir = glm::vec4(glm::normalize(lookPos - eyePos), 1.0f);
 	
 	// ユニフォームバッファを設定
 	glBindBufferBase(GL_UNIFORM_BUFFER, 0, g_ubo);
