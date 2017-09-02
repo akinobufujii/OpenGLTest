@@ -5,3 +5,4 @@
 # 除外するディレクトリ
 Debug/
 Release/
+.vs/
