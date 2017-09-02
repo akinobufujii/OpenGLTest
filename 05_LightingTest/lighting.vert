@@ -5,11 +5,11 @@ layout (location = 1) in vec2 inUV;
 layout (location = 2) in vec3 inNormal;
 layout (location = 3) in vec4 inColor;
 
-layout (location = 0) out vec4 outColor;
-layout (location = 1) out vec2 outUV;
-layout (location = 2) out vec3 outNormal;
-layout (location = 3) out vec3 outLightDir;
-layout (location = 4) out vec3 outEyeDir;
+varying vec2 modelUV;
+varying vec4 colorDiffuse;
+varying vec3 vecNormal;
+varying vec3 vecLightDir;
+varying vec3 vecEyeDir;
 
 // ユニフォームバッファ
 layout (binding = 0) uniform VALUES
@@ -25,10 +25,10 @@ void main()
 {
 	// ライティング計算はフラグメントシェーダーで行う
 	mat4 pvwMatrix = g_projection * g_view * g_world;
-	outColor = inColor;
-	outUV = inUV;
-	outNormal = normalize((g_world * vec4(inNormal, 1.0)).xyz);
-	outLightDir = g_lightDir.xyz;
-	outEyeDir = g_eyeDir.xyz;
+	colorDiffuse = inColor;
+	modelUV = inUV;
+	vecNormal = normalize((g_world * vec4(inNormal, 1.0)).xyz);
+	vecLightDir = g_lightDir.xyz;
+	vecEyeDir = g_eyeDir.xyz;
 	gl_Position = pvwMatrix * inPos;
 }

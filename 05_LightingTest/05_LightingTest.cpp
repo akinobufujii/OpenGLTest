@@ -96,7 +96,6 @@ bool initResource()
 	glBindAttribLocation(g_program, 1, "inUV");
 	glBindAttribLocation(g_program, 2, "inNormal");
 	glBindAttribLocation(g_program, 3, "inColor");
-	glBindFragDataLocation(g_program, 0, "outputColor");
 	glLinkProgram(g_program);
 
 	// メッシュ読み込み
