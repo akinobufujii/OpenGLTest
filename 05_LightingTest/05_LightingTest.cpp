@@ -57,10 +57,31 @@ GLuint	g_ibo;				// インデックスバッファオブジェクト
 GLuint	g_ubo;				// ユニフォームバッファオブジェクト
 GLuint	g_blockIndex;		// ユニフォームバッファのブロックインデックス
 GLuint	g_indexBufferSize;	// インデックスバッファサイズ
-GLuint	g_texture;			// テクスチャ
+GLuint	g_albedoTex;		// アルベドテクスチャ
 
 // ユニフォームバッファ用変数
 UB_VALUES g_ubGlobalValue;
+
+//==============================================================================
+// テクスチャ作成
+//==============================================================================
+GLuint createTexture(const std::string& filename)
+{
+	GLuint textureHandle = 0;
+	int width, height, bpp;
+	stbi_uc* pPixelData = stbi_load(filename.c_str(), &width, &height, &bpp, STBI_rgb_alpha);
+
+	glGenTextures(1, &textureHandle);
+	glBindTexture(GL_TEXTURE_2D, textureHandle);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pPixelData);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	stbi_image_free(pPixelData);
+
+	return textureHandle;
+}
 
 //==============================================================================
 // リソースの初期化
@@ -140,22 +161,12 @@ bool initResource()
 	g_indexBufferSize = meshData.getMeshDatum()[0].indices.size();
 
 	// テクスチャ作成
-	int width, height, bpp;
-	stbi_uc* pPixelData = stbi_load(meshData.getMeshDatum().front().textureName.c_str(), &width, &height, &bpp, STBI_rgb_alpha);
-
-	glGenTextures(1, &g_texture);
-	glBindTexture(GL_TEXTURE_2D, g_texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pPixelData);
-
-	stbi_image_free(pPixelData);
+	g_albedoTex = createTexture(meshData.getMeshDatum().front().textureName);
 
 	// ユニフォームバッファオブジェクトを作成
 	glGenBuffers(1, &g_ubo);
 	
 	// 各種バインドを解除する
-	glBindTexture(g_texture, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -170,6 +181,9 @@ void destroyResource()
 {
 	// ユニフォームバッファオブジェクト解放
 	glDeleteBuffers(1, &g_ubo);
+
+	// テクスチャ解放
+	glDeleteTextures(1, &g_albedoTex);
 
 	// インデックスバッファオブジェクト解放
 	glDeleteBuffers(1, &g_ibo);
@@ -225,7 +239,7 @@ void Render()
 
 	// テクスチャを設定
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, g_texture);
+	glBindTexture(GL_TEXTURE_2D, g_albedoTex);
 
 	// 頂点配列オブジェクトを設定
 	glBindVertexArray(g_vao);
