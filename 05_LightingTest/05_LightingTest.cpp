@@ -58,7 +58,9 @@ GLuint	g_ubo;				// ユニフォームバッファオブジェクト
 GLuint	g_blockIndex;		// ユニフォームバッファのブロックインデックス
 GLuint	g_indexBufferSize;	// インデックスバッファサイズ
 GLuint	g_albedoTex;		// アルベドテクスチャ
-GLuint	g_specularlTex;		// スペキュラテクスチャ
+GLuint	g_normalTex;		// 法線テクスチャ
+GLuint	g_metallicTex;		// メタリックテクスチャ
+GLuint	g_roughnessTex;		// ラフネステクスチャ
 
 // ユニフォームバッファ用変数
 UB_VALUES g_ubGlobalValue;
@@ -163,7 +165,8 @@ bool initResource()
 
 	// テクスチャ作成
 	g_albedoTex = createTexture(meshData.getMeshDatum().front().textureName);
-	g_specularlTex = createTexture("Textures/Cerberus_M.tga");
+	g_metallicTex = createTexture("Textures/Cerberus_M.tga");
+	g_roughnessTex = createTexture("Textures/Cerberus_R.tga");
 
 	// ユニフォームバッファオブジェクトを作成
 	glGenBuffers(1, &g_ubo);
@@ -186,7 +189,8 @@ void destroyResource()
 
 	// テクスチャ解放
 	glDeleteTextures(1, &g_albedoTex);
-	glDeleteTextures(1, &g_specularlTex);
+	glDeleteTextures(1, &g_metallicTex);
+	glDeleteTextures(1, &g_roughnessTex);
 
 	// インデックスバッファオブジェクト解放
 	glDeleteBuffers(1, &g_ibo);
@@ -245,7 +249,10 @@ void Render()
 	glBindTexture(GL_TEXTURE_2D, g_albedoTex);
 
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, g_specularlTex);
+	glBindTexture(GL_TEXTURE_2D, g_metallicTex);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, g_roughnessTex);
 
 	// 頂点配列オブジェクトを設定
 	glBindVertexArray(g_vao);
