@@ -4,12 +4,14 @@ layout (location = 0) in vec4 inPos;
 layout (location = 1) in vec2 inUV;
 layout (location = 2) in vec3 inNormal;
 layout (location = 3) in vec4 inColor;
+layout (location = 4) in vec3 inTangent;
+layout (location = 5) in vec3 inBitangent;
 
 varying vec2 modelUV;
 varying vec4 colorDiffuse;
-varying vec3 vecNormal;
 varying vec3 vecLightDir;
 varying vec3 vecEyeDir;
+varying mat3 matTBN;
 
 // ユニフォームバッファ
 layout (binding = 0) uniform VALUES
@@ -27,8 +29,12 @@ void main()
 	mat4 pvwMatrix = g_projection * g_view * g_world;
 	colorDiffuse = inColor;
 	modelUV = inUV;
-	vecNormal = normalize((g_world * vec4(inNormal, 1.0)).xyz);
 	vecLightDir = g_lightDir.xyz;
 	vecEyeDir = g_eyeDir.xyz;
+	matTBN = mat3(
+		normalize((g_world * vec4(inTangent, 1.0)).xyz),
+		normalize((g_world * vec4(inBitangent, 1.0)).xyz),
+		normalize((g_world * vec4(inNormal, 1.0)).xyz)
+	);
 	gl_Position = pvwMatrix * inPos;
 }

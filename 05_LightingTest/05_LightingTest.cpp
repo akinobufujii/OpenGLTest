@@ -58,9 +58,9 @@ GLuint	g_ubo;				// ユニフォームバッファオブジェクト
 GLuint	g_blockIndex;		// ユニフォームバッファのブロックインデックス
 GLuint	g_indexBufferSize;	// インデックスバッファサイズ
 GLuint	g_albedoTex;		// アルベドテクスチャ
-GLuint	g_normalTex;		// 法線テクスチャ
 GLuint	g_metallicTex;		// メタリックテクスチャ
 GLuint	g_roughnessTex;		// ラフネステクスチャ
+GLuint	g_normalTex;		// 法線テクスチャ
 
 // ユニフォームバッファ用変数
 UB_VALUES g_ubGlobalValue;
@@ -156,6 +156,14 @@ bool initResource()
 	glEnableVertexAttribArray(3);
 	offset += sizeof(MeshImporter::MeshData::VertexFormat::m_color);
 
+	glVertexAttribPointer(4, sizeof(MeshImporter::MeshData::VertexFormat::m_tangent) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(MeshImporter::MeshData::VertexFormat), reinterpret_cast<void*>(offset));
+	glEnableVertexAttribArray(4);
+	offset += sizeof(MeshImporter::MeshData::VertexFormat::m_tangent);
+
+	glVertexAttribPointer(5, sizeof(MeshImporter::MeshData::VertexFormat::m_bitangent) / sizeof(float), GL_FLOAT, GL_FALSE, sizeof(MeshImporter::MeshData::VertexFormat), reinterpret_cast<void*>(offset));
+	glEnableVertexAttribArray(5);
+	offset += sizeof(MeshImporter::MeshData::VertexFormat::m_bitangent);
+
 	// インデックスバッファオブジェクト作成
 	glGenBuffers(1, &g_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, g_ibo);
@@ -167,6 +175,7 @@ bool initResource()
 	g_albedoTex = createTexture(meshData.getMeshDatum().front().textureName);
 	g_metallicTex = createTexture("Textures/Cerberus_M.tga");
 	g_roughnessTex = createTexture("Textures/Cerberus_R.tga");
+	g_normalTex = createTexture("Textures/Cerberus_N.tga");
 
 	// ユニフォームバッファオブジェクトを作成
 	glGenBuffers(1, &g_ubo);
@@ -191,6 +200,7 @@ void destroyResource()
 	glDeleteTextures(1, &g_albedoTex);
 	glDeleteTextures(1, &g_metallicTex);
 	glDeleteTextures(1, &g_roughnessTex);
+	glDeleteTextures(1, &g_normalTex);
 
 	// インデックスバッファオブジェクト解放
 	glDeleteBuffers(1, &g_ibo);
@@ -229,7 +239,7 @@ void Render()
 	g_ubGlobalValue.view = glm::lookAtRH(eyePos, lookPos, glm::vec3(0.0f, 1.0f, 0.0f));
 
 	static float rotateY = 0.0f;
-	rotateY += 0.1f;
+	rotateY += 0.05f;
 	rotateY = fmodf(rotateY, 360.0f);
 	g_ubGlobalValue.world = glm::mat4();
 	g_ubGlobalValue.world = glm::rotate(g_ubGlobalValue.world, glm::radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -253,6 +263,9 @@ void Render()
 
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, g_roughnessTex);
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, g_normalTex);
 
 	// 頂点配列オブジェクトを設定
 	glBindVertexArray(g_vao);
