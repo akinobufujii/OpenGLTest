@@ -58,6 +58,7 @@ GLuint	g_ubo;				// ユニフォームバッファオブジェクト
 GLuint	g_blockIndex;		// ユニフォームバッファのブロックインデックス
 GLuint	g_indexBufferSize;	// インデックスバッファサイズ
 GLuint	g_albedoTex;		// アルベドテクスチャ
+GLuint	g_specularlTex;		// スペキュラテクスチャ
 
 // ユニフォームバッファ用変数
 UB_VALUES g_ubGlobalValue;
@@ -162,6 +163,7 @@ bool initResource()
 
 	// テクスチャ作成
 	g_albedoTex = createTexture(meshData.getMeshDatum().front().textureName);
+	g_specularlTex = createTexture("Textures/Cerberus_M.tga");
 
 	// ユニフォームバッファオブジェクトを作成
 	glGenBuffers(1, &g_ubo);
@@ -184,6 +186,7 @@ void destroyResource()
 
 	// テクスチャ解放
 	glDeleteTextures(1, &g_albedoTex);
+	glDeleteTextures(1, &g_specularlTex);
 
 	// インデックスバッファオブジェクト解放
 	glDeleteBuffers(1, &g_ibo);
@@ -240,6 +243,9 @@ void Render()
 	// テクスチャを設定
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, g_albedoTex);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, g_specularlTex);
 
 	// 頂点配列オブジェクトを設定
 	glBindVertexArray(g_vao);

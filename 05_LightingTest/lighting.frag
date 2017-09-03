@@ -1,6 +1,7 @@
 #version 450
 
 layout (binding = 0) uniform sampler2D samplerColorMap;
+layout (binding = 1) uniform sampler2D samplerSpecularMap;
 
 varying vec2 modelUV;
 varying vec4 colorDiffuse;
@@ -18,5 +19,5 @@ void main()
     float specularLight = pow(max(dot(-vecEyeDir, reflectVec), 0.0), 20);
 
 	gl_FragColor = texture(samplerColorMap, modelUV) * vec4(diffuse, colorDiffuse.a);
-	gl_FragColor.rgb += specularLight;
+	gl_FragColor.rgb += vec3(specularLight) * texture(samplerSpecularMap, modelUV).rgb;
 }
