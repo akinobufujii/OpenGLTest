@@ -7,11 +7,11 @@ layout (location = 3) in vec4 inColor;
 layout (location = 4) in vec3 inTangent;
 layout (location = 5) in vec3 inBitangent;
 
-varying vec2 modelUV;
-varying vec4 colorDiffuse;
-varying vec3 vecLightDir;
-varying vec3 vecEyeDir;
-varying mat3 matTBN;
+out vec2 modelUV;
+out vec4 colorDiffuse;
+out vec3 vecLightDir;
+out vec3 vecEyeDir;
+out mat3 matTBN;
 
 // ユニフォームバッファ
 layout (binding = 0) uniform VALUES

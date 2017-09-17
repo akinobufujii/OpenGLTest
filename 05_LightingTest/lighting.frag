@@ -5,11 +5,11 @@ layout (binding = 1) uniform sampler2D samplerMetallicMap;
 layout (binding = 2) uniform sampler2D samplerRoughnessMap;
 layout (binding = 3) uniform sampler2D samplerNormalMap;
 
-varying vec2 modelUV;
-varying vec4 colorDiffuse;
-varying vec3 vecLightDir;
-varying vec3 vecEyeDir;
-varying mat3 matTBN;
+in vec2 modelUV;
+in vec4 colorDiffuse;
+in vec3 vecLightDir;
+in vec3 vecEyeDir;
+in mat3 matTBN;
 
 void main()
 {

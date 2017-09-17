@@ -244,7 +244,7 @@ void Render()
 	g_ubGlobalValue.world = glm::mat4();
 	g_ubGlobalValue.world = glm::rotate(g_ubGlobalValue.world, glm::radians(rotateY), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	g_ubGlobalValue.lightDir = glm::vec4(glm::normalize(glm::vec3(1.0f, -1.0f, -1.0f)), 1.0f);
+	g_ubGlobalValue.lightDir = glm::vec4(glm::normalize(glm::vec3(1.0f, 0.0f, -1.0f)), 1.0f);
 
 	g_ubGlobalValue.eyeDir = glm::vec4(glm::normalize(lookPos - eyePos), 1.0f);
 	
