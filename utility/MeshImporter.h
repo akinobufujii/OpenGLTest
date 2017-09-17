@@ -27,8 +27,14 @@ public:
 			aiVector2D	m_uv;
 			aiVector3D	m_normal;
 			aiColor4D	m_color;
+			aiVector3D	m_tangent;
+			aiVector3D	m_bitangent;
 
-			VertexFormat(const aiVector3D& pos, const aiVector2D& uv, const aiVector3D& normal, const aiColor4D& color)
+			VertexFormat(
+				const aiVector3D& pos,
+				const aiVector2D& uv,
+				const aiVector3D& normal,
+				const aiColor4D& color)
 				: m_pos(pos)
 				, m_uv(uv)
 				, m_normal(normal)

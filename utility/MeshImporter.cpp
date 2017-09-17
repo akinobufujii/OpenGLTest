@@ -19,7 +19,7 @@ bool MeshImporter::loadMesh(const std::string& filename, float scale, bool isFli
 	Assimp::Importer importer;
 
 	// ファイルからシーン作成
-	const aiScene* pScene = importer.ReadFile(filename, aiProcess_FlipWindingOrder | aiProcess_Triangulate | aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals);
+	const aiScene* pScene = importer.ReadFile(filename, aiProcess_FlipWindingOrder | aiProcess_Triangulate | aiProcess_PreTransformVertices | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
 	if(pScene)
 	{
@@ -70,6 +70,9 @@ bool MeshImporter::loadMesh(const std::string& filename, float scale, bool isFli
 					aiVector2D(pTexCoord->x, pTexCoord->y),
 					pMesh->mNormals[j],
 					diffuseColor);
+
+				m_mashDatum[i].vertices.back().m_tangent = pMesh->mTangents[j];
+				m_mashDatum[i].vertices.back().m_bitangent = pMesh->mBitangents[j];
 			}
 
 			// 面情報からインデックス情報を獲得
